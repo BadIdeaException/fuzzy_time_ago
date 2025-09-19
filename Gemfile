@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in timeish.gemspec
 gemspec
 
+gem 'bump', '~> 0.8'
 gem 'debug', '~> 1.11'
 gem 'rake', '~> 13.0'
 gem 'rspec', '~> 3.0'

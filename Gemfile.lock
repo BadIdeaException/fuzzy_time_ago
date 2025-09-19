@@ -7,6 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
+    bump (0.10.0)
     date (3.4.1)
     debug (1.11.0)
       irb (~> 1.10)
@@ -86,6 +87,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bump (~> 0.8)
   debug (~> 1.11)
   fuzzy_time_ago!
   rake (~> 13.0)
