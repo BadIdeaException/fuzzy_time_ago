@@ -6,30 +6,22 @@ on:
       - 'v*'
 
 jobs:
-  test-and-release:
+  release:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ['3.1', '2.6']
-    runs-on: ubuntu-latest
+        ruby: ['3.2', '2.6']
+        task: [lint, spec]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: ${{ matrix.ruby }} rake ${{ matrix.task }}
+        steps:
+        - uses: actions/checkout@v5
+        - uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: ${{ matrix.ruby }}
+            bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-
-      - name: Lint
-        run: bundle exec rake lint
-
-      - name: Test
-        run: bundle exec rake spec
+        - run: bundle exec rake ${{ matrix.task }}
 
       - name: Publish gem 
         if: success()
