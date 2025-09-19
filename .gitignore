@@ -1,0 +1,5 @@
+vendor/
+.vagrant/
+*.key*
+.aider*
+fuzzy_time_ago.sublime-workspace
