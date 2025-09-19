@@ -10,7 +10,6 @@
 
 USERNAME = 'vagrant'
 
-# rubocop:disable Metrics
 Vagrant.configure('2') do |config|
   config.vm.provider 'docker' do |docker|
     # Create ssh keys unless they are already created
