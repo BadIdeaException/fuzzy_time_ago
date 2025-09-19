@@ -6,25 +6,35 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby: ['3.2', '2.6']
         task: [lint, spec]
     steps:
-      - name: ${{ matrix.ruby }} rake ${{ matrix.task }}
-        steps:
-        - uses: actions/checkout@v5
-        - uses: ruby/setup-ruby@v1
-          with:
-            ruby-version: ${{ matrix.ruby }}
-            bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run rake ${{ matrix.task }}
+        run: bundle exec rake ${{ matrix.task }}
 
-        - run: bundle exec rake ${{ matrix.task }}
-
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Ruby and bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
       - name: Publish gem 
-        if: success()
         env:
           RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
         run: bundle exec rake release
