@@ -1,0 +1,38 @@
+name: Release Gem
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  test-and-release:
+    strategy:
+      matrix:
+        ruby: ['3.1', '2.6']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Lint
+        run: bundle exec rake lint
+
+      - name: Test
+        run: bundle exec rake spec
+
+      - name: Publish gem 
+        if: success()
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: bundle exec rake release
