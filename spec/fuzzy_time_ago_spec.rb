@@ -84,64 +84,77 @@ RSpec.describe FuzzyTimeAgo do
     end
 
     it "returns 'about a month ago' for 4 weeks in a non-leap-year February" do
-      Timecop.freeze Time.new(2025, 0o3, 0o1, 12, 0, 0)
+      Timecop.freeze Time.new(2025, 3, 1, 12, 0, 0)
       expect(fuzzy_ago_from_now(28 * DAYS)).to eq('about a month ago')
     end
 
     it "returns 'about a month ago' for 1-2 months" do
-      expect(fuzzy_ago_from_now(today.prev_month)).to eq('about a month ago')
-      expect(fuzzy_ago_from_now(today.prev_month(2) + 1)).to eq('about a month ago')
+      [today.prev_month, today.prev_month(2) + 1].each do |time|
+        expect(fuzzy_ago_from_now(time)).to eq('about a month ago')
+      end
     end
 
     it "returns 'about 2 months ago' for 2-3 months" do
-      expect(fuzzy_ago_from_now(today.prev_month(2))).to eq('about 2 months ago')
-      expect(fuzzy_ago_from_now(today.prev_month(3) + 1)).to eq('about 2 months ago')
+      [today.prev_month(2), today.prev_month(3) + 1].each do |time|
+        expect(fuzzy_ago_from_now(time)).to eq('about 2 months ago')
+      end
     end
 
     it 'returns months for 3+ months' do
       (3...12).each do |month|
-        expect(fuzzy_ago_from_now(today.prev_month(month))).to eq("#{month} months ago")
+        time = today.prev_month(month)
+        expect(fuzzy_ago_from_now(time)).to eq("#{month} months ago")
       end
     end
 
     it "returns 'about a year ago' for 1 year to 1 year 3 months" do
-      (0...3).each do |extra_months|
-        expect(fuzzy_ago_from_now(today.prev_year.prev_month(extra_months))).to eq('about a year ago')
+      examples = (0...3).map { |extra_months| today.prev_year.prev_month(extra_months) }
+      examples << (today.prev_year.prev_month(3) + 1)
+
+      examples.each do |time|
+        expect(fuzzy_ago_from_now(time)).to eq('about a year ago')
       end
-      expect(fuzzy_ago_from_now(today.prev_year.prev_month(3) + 1)).to eq('about a year ago')
     end
 
     it "returns 'over a year ago' for 1 year 3 months to 1 year 9 months" do
-      (3...9).each do |extra_months|
-        expect(fuzzy_ago_from_now(today.prev_year.prev_month(extra_months))).to eq('over a year ago')
+      examples = (3...9).map { |extra_months| today.prev_year.prev_month(extra_months) }
+      examples << (today.prev_year.prev_month(9) + 1)
+
+      examples.each do |time|
+        expect(fuzzy_ago_from_now(time)).to eq('over a year ago')
       end
-      expect(fuzzy_ago_from_now(today.prev_year.prev_month(9) + 1)).to eq('over a year ago')
     end
 
     it "returns 'almost n years ago' for n-1 year 9 months to n years (1 < n <= 10)" do
       (2..10).each do |years|
-        (9...12).each do |extra_months|
-          expect(fuzzy_ago_from_now(today.prev_year(years - 1).prev_month(extra_months))).to eq("almost #{years} years ago")
+        examples = (9...12).map { |extra_months| today.prev_year(years - 1).prev_month(extra_months) }
+        examples << (today.prev_year(years - 1).prev_month(12) + 1)
+
+        examples.each do |time|
+          expect(fuzzy_ago_from_now(time)).to eq("almost #{years} years ago")
         end
-        expect(fuzzy_ago_from_now(today.prev_year(years - 1).prev_month(12) + 1)).to eq("almost #{years} years ago")
       end
     end
 
     it "returns 'about n years ago' for n years to n years 3 months (1 < n <= 10)" do
       (2..10).each do |years|
-        (0...3).each do |extra_months|
-          expect(fuzzy_ago_from_now(today.prev_year(years).prev_month(extra_months))).to eq("about #{years} years ago")
+        examples = (0...3).map { |extra_months| today.prev_year(years).prev_month(extra_months) }
+        examples << (today.prev_year(years).prev_month(3) + 1)
+
+        examples.each do |time|
+          expect(fuzzy_ago_from_now(time)).to eq("about #{years} years ago")
         end
-        expect(fuzzy_ago_from_now(today.prev_year(years).prev_month(3) + 1)).to eq("about #{years} years ago")
       end
     end
 
     it "returns 'over n years ago' for n year 3 months to n years 9 months (1 < n <= 10)" do
       (2..10).each do |years|
-        (3...9).each do |extra_months|
-          expect(fuzzy_ago_from_now(today.prev_year(years).prev_month(extra_months))).to eq("over #{years} years ago")
+        examples = (3...9).map { |extra_months| today.prev_year(years).prev_month(extra_months) }
+        examples << (today.prev_year(years).prev_month(9) + 1)
+
+        examples.each do |time|
+          expect(fuzzy_ago_from_now(time)).to eq("over #{years} years ago")
         end
-        expect(fuzzy_ago_from_now(today.prev_year(years).prev_month(9) + 1)).to eq("over #{years} years ago")
       end
     end
 
