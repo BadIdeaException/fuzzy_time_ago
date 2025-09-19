@@ -1,0 +1,16 @@
+plugins: 
+- rubocop-rspec
+- rubocop-rake
+
+# Disable metrics. Although fuzzy_ago is long, it is in reality not complex at all
+Metrics:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Max: 10
+  
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
