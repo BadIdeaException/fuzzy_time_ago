@@ -2,6 +2,8 @@
 
 require_relative "fuzzy_time_ago/version"
 
+# FuzzyTimeAgo provides a method to convert timestamps into fuzzy, human-readable
+# descriptions of the time elapsed relative to the current system time.
 module FuzzyTimeAgo
   class Error < StandardError; end
   Difference = Struct.new(:seconds, :minutes, :hours, :days, :weeks, :months, :years)
