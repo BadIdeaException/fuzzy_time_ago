@@ -6,11 +6,11 @@ gemspec
 
 gem 'rake', '~> 13.0'
 
-group :spec
+group :spec do
   gem 'rspec', '~> 3.0'
 end
 
-group :lint
+group :lint do
   gem 'rubocop', '~> 1.0'
   gem 'rubocop-rake', '~> 0.7.1'
   gem 'rubocop-rspec', '~> 3.7'
