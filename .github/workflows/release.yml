@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,16 +15,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+
       - name: Setup Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          # Prevent Bundler version to be read from Gemfile.lock to prevent setup-ruby
+          # from trying to install a Bundler version incompatible with older Ruby versions
+          bundler: default
+
       - name: Run rake ${{ matrix.task }}
         run: bundle exec rake ${{ matrix.task }}
 
   release:
-    needs: test
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
