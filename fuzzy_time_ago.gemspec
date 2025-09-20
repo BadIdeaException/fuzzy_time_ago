@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
                      "like 'less than a minute ago', 'about 2 months ago', etc."
   spec.homepage = 'https://github.com/BadIdeaException/fuzzy_time_ago'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 2.7.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/BadIdeaException/fuzzy_time_ago'
