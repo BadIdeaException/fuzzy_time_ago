@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fuzzy_time_ago (0.1.0)
+    fuzzy_time_ago (1.0.0)
 
 GEM
   remote: https://rubygems.org/
