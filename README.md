@@ -89,6 +89,15 @@ After checking out the repo, run `bundle install` to install dependencies. Then,
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
+For version management, this gem uses [`bump`](https://github.com/gregorym/bump):
+```
+bundle exec rake bump:major
+bundle exec rake bump:patch
+bundle exec rake bump:minor
+bundle exec rake bump:pre
+```
+Release and publishing are automated through a Github Actions workflow.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/BadIdeaException/fuzzy_time_ago.
